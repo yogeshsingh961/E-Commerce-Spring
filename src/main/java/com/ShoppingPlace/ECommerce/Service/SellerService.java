@@ -1,12 +1,17 @@
 package com.ShoppingPlace.ECommerce.Service;
 
+import com.ShoppingPlace.ECommerce.Entity.Product;
 import com.ShoppingPlace.ECommerce.RequestDto.SellerRequestDto;
+import com.ShoppingPlace.ECommerce.ResponseDto.ProductDto;
 import com.ShoppingPlace.ECommerce.ResponseDto.SellerResponseDto;
 import com.ShoppingPlace.ECommerce.Entity.Seller;
 import com.ShoppingPlace.ECommerce.Repository.SellerRepository;
 import com.ShoppingPlace.ECommerce.converter.SellerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SellerService {
@@ -38,27 +43,30 @@ public class SellerService {
          return "Congrats!"+seller.getName()+" Welcome to E-Commerce website!!";
 
     }
-    public SellerResponseDto viewSeller(int id){
-        Seller seller=sellerRepository.findById(id).get();
-        //set sellerResponseDto
+
+   public SellerResponseDto viewSeller(int id) throws Exception {
+        Seller seller;
+        try {
+            seller = sellerRepository.findById(id).get();
+        }catch (Exception e){
+            throw new Exception("Seller not found");
+        }
         SellerResponseDto sellerResponseDto= new SellerResponseDto();
-        sellerResponseDto.setEmail(seller.getEmail());
         sellerResponseDto.setName(seller.getName());
+        sellerResponseDto.setEmail(seller.getEmail());
+
+       List<Product> products=seller.getProducts();
+       List<ProductDto> productDtoList= new ArrayList<>();
+       for(Product p:products){
+           ProductDto productDto= new ProductDto();
+           productDto.setName(p.getName());
+           productDto.setPrice(p.getPrice());
+           productDto.setCategory(p.getProductCategory());
+           productDtoList.add(productDto);
+       }
+       sellerResponseDto.setProductDtos(productDtoList);
         return sellerResponseDto;
 
-    }
-//   public SellerResponseDto viewSeller(int id) throws Exception {
-//        Seller seller;
-//        try {
-//            seller = sellerRepository.findById(id).get();
-//        }catch (Exception e){
-//            throw new Exception("Seller not found");
-//        }
-//        SellerResponseDto sellerResponseDto= new SellerResponseDto();
-//        sellerResponseDto.setName(seller.getName());
-//        sellerResponseDto.setEmail(seller.getEmail());
-//        return sellerResponseDto;
-//
-//        }
+        }
 
 }

@@ -21,18 +21,18 @@ public class SellerController {
 
 
 
-//    @PostMapping("/view-seller")
-//   public ResponseEntity viewSeller(@RequestParam int id) throws Exception{
-//       SellerResponseDto sellerResponseDto;
-//       try{
-//           sellerResponseDto=sellerService.viewSeller(id);
-//       }catch (Exception e){
-//           return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-//       }
-//
-//
-//        return new ResponseEntity(sellerResponseDto,HttpStatus.ACCEPTED);
-//
-//    }
+    @GetMapping("/view-seller")
+   public ResponseEntity viewSeller(@RequestParam int id) throws Exception{
+       SellerResponseDto sellerResponseDto;
+       try{
+           sellerResponseDto=sellerService.viewSeller(id);
+       }catch (Exception e){
+           return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+       }
+
+
+        return new ResponseEntity(sellerResponseDto,HttpStatus.ACCEPTED);
+
+    }
 
 }
