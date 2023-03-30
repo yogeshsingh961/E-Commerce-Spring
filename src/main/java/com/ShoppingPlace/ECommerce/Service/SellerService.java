@@ -1,6 +1,7 @@
 package com.ShoppingPlace.ECommerce.Service;
 
 import com.ShoppingPlace.ECommerce.Entity.Product;
+import com.ShoppingPlace.ECommerce.Exception.SellerNotFoundException;
 import com.ShoppingPlace.ECommerce.RequestDto.SellerRequestDto;
 import com.ShoppingPlace.ECommerce.ResponseDto.ProductDto;
 import com.ShoppingPlace.ECommerce.ResponseDto.SellerResponseDto;
@@ -68,5 +69,21 @@ public class SellerService {
         return sellerResponseDto;
 
         }
+        public List<SellerResponseDto> findAllSellers() throws SellerNotFoundException {
+            List<Seller> sellers;
+        try {
+          sellers = sellerRepository.findAll();
+        }catch (Exception e){
+            throw new SellerNotFoundException("No seller added");
+        }
 
+        List<SellerResponseDto> sellerResponseDto= new ArrayList<>();
+         for(Seller s:  sellers){
+             SellerResponseDto sellerResponseDto1=SellerConverter.SellerToSellerResponseDto(s);
+             sellerResponseDto.add(sellerResponseDto1);
+         }
+
+         return sellerResponseDto;
+
+        }
 }
